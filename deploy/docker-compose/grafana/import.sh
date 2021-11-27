@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 
-sleep 3
+# Wait for Grafana
+until curl -sSf "http://admin:foobar@grafana:3000/api/health"; do
+  >&2 echo "Grafana is unavailable - sleeping"
+  sleep 1
+done
+
 # Import data sources
 for file in *-datasource.json; do
   if [ -e "$file" ]; then
